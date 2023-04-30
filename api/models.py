@@ -6,7 +6,7 @@ class Event(models.Model):
     owner = models.ForeignKey('auth.user', on_delete=models.CASCADE, related_name='events')
     type = models.CharField(max_length=200)
     name = models.CharField(max_length=300)
-    envent_image =models.ImageField(upload_to='event')
+    envent_image =models.ImageField(upload_to='event', null=True)
     tagline = models.CharField(max_length=500)
     schedule =models.DateTimeField()
     description = models.TextField()
