@@ -102,31 +102,3 @@ class EventRetrieveUpdateDeleteView(generics.GenericAPIView):
             return Response(data={'message':'Event deleted successfully.'}, status=status.HTTP_200_OK)
         return Response(data={'message':'Event is not found for this id.'}, status=status.HTTP_400_BAD_REQUEST) 
 
-
-class CustomPagination(PageNumberPagination):
-    page_size = 1000
-    page_size_query_param = 'page_size'
-    max_page_size = 5
-
-class EventTypeView(generics.GenericAPIView):
-    serializer_class = EventSerializer
-    permission_classes = [IsAuthenticated]
-    pagination_class=[CustomPagination]
-
-    def get(self, request:Request, *args, **kwargs):
-        events = Event.objects.filter(type=Q(kwargs.get('type')))
-        serializer = self.serializer_class(events, many=True)
-        if serializer:
-            return Response(data=serializer.data, status=status.HTTP_200_OK)
-        return Response(data={'message':'Quering type is not found.'}, status=status.HTTP_404_NOT_FOUND)
-    
-
-# class EventListView(generics.ListAPIView):
-#     serializer_class = EventSerializer
-
-#     def get_queryset(self):
-#         type_param = self.request.query_params.get('type')
-#         queryset = Event.objects.all()
-#         if type_param:
-#             queryset = queryset.filter(type=type_param)
-#         return queryset
